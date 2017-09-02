@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+
+<head>
+  <meta charset="utf-8">
+    <title> D3 Page Template</title>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style>
+        div.bar{
+          display: inline-block;
+          width: 20px;
+          height: 75px;
+          background-color: teal;
+          margin-right: 2px;
+        }
+    </style>
+  </head>
+  <body>
+    <script type="text/javascript">
+
+      // width and height of svg element
+      var w  = 500;
+      var h = 100;
+
+      //create SVG element
+
+      var svg = d3.select("body")
+      .append("svg")
+      .attr("width", w)
+      .attr("height", h);
+
+      var dataset = [5, 10, 27, 3,1, 34, 15,20,  43, 25];
+
+      svg.selectAll("rect")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("y", function(d){
+        return h -d; // flips the svg to be right side up :D
+      })
+      .attr("width", 20)
+      .attr("height", function(d){
+        return(d)
+
+      })
+      .attr("x", function(d, i){
+        return i * ( w/ dataset.length);
+      })
+      .attr("fill", function(d){
+        return "rgb(0,0, " + Math.round( d * 10) + ")";
+      });
+
+
+
+    </script>
+
+
+  </body>
+</html>
