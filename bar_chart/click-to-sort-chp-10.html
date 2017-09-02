@@ -8,7 +8,7 @@
 			/* No style rules here yet */
 
       /* change color on hover with just CSS! */
-      /*rect {
+      rect {
         -moz-transition: all 0.25s;
         -o-transition: all 0.25s;
         -webkit-transition: all 0.25s;
@@ -16,7 +16,7 @@
       }
       rect:hover {
         fill: orange;
-      }*/
+      }
 		</style>
 	</head>
 	<body>
@@ -62,15 +62,18 @@
 			   .attr("fill", function(d) {
 					return "rgb(0, 0, " + Math.round(d * 10) + ")";
 			   })
-         .on("mouseover", function(){
-           d3.select(this)
-           .attr("fill", "orange")
-         })
-         .on("mouseout", function(d){
-           d3.select(this)
-           .transition()
-           .duration(250)
-           .attr("fill", "rgb(0, 0, " + (d * 10) + ")");
+        //  .on("mouseover", function(){
+        //    d3.select(this)
+        //    .attr("fill", "orange")
+        //  })
+        //  .on("mouseout", function(d){
+        //    d3.select(this)
+        //    .transition()
+        //    .duration(250)
+        //    .attr("fill", "rgb(0, 0, " + (d * 10) + ")");
+        //  })
+         .on("click", function(){
+           sortBars();
          });
 
 			//Create labels
@@ -92,6 +95,34 @@
 			   .attr("font-family", "sans-serif")
 			   .attr("font-size", "11px")
 			   .attr("fill", "white");
+
+
+         var sortBars = function(){
+           svg.selectAll("rect")
+           .sort(function(a,b){
+             return d3.ascending(a,b);
+           })
+           .transition()
+           .duration(1000)
+           .attr("x", function(d, i){
+             return xScale(i);
+           })
+           svg.selectAll("text")
+           .sort(function(a,b){
+             return d3.ascending(a,b);
+           })
+           .transition()
+           .duration(1000)
+ 					   .text(function(d) {
+ 					   		return d;
+ 					   })
+ 					   .attr("x", function(d, i) {
+ 					   		return xScale(i) + xScale.bandwidth() / 2;
+ 					   })
+ 					   .attr("y", function(d) {
+ 					   		return h - yScale(d) + 14;
+ 					   });
+         }
 
 		</script>
 	</body>

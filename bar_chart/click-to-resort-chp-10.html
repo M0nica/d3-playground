@@ -68,9 +68,12 @@
          })
          .on("mouseout", function(d){
            d3.select(this)
-           .transition()
+           .transition("restoreBarColor")
            .duration(250)
            .attr("fill", "rgb(0, 0, " + (d * 10) + ")");
+         })
+         .on("click", function(){
+           sortBars();
          });
 
 			//Create labels
@@ -92,6 +95,54 @@
 			   .attr("font-family", "sans-serif")
 			   .attr("font-size", "11px")
 			   .attr("fill", "white");
+
+
+         var sortOrder = false;
+
+         var sortBars = function(){
+
+           sortOrder = !sortOrder;
+
+           svg.selectAll("rect")
+           .sort(function(a,b){
+             if (sortOrder){
+               return d3.ascending(a,b);
+             } else {
+               return d3.descending(a,b);
+             }
+
+           })
+           .transition("sortBars")
+           .delay(function(d,i){
+             return i * 50;
+           })
+           .duration(1000)
+           .attr("x", function(d, i){
+             return xScale(i);
+           })
+           svg.selectAll("text")
+           .sort(function(a,b){
+             if (sortOrder){
+               return d3.ascending(a,b);
+             } else {
+               return d3.descending(a,b);
+             }
+           })
+           .transition("sortLabels")
+           .delay(function(d,i){
+             return i * 50;
+           })
+           .duration(1000)
+ 					   .text(function(d) {
+ 					   		return d;
+ 					   })
+ 					   .attr("x", function(d, i) {
+ 					   		return xScale(i) + xScale.bandwidth() / 2;
+ 					   })
+ 					   .attr("y", function(d) {
+ 					   		return h - yScale(d) + 14;
+ 					   });
+         }
 
 		</script>
 	</body>
