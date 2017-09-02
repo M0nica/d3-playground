@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Page Template</title>
+        <script type="text/javascript" src="../d3.js"></script>
+    </head>
+    <body>
+        <script type="text/javascript">
+            var rowConverter = function(d){
+              return{
+                //Make a new Data object for each year and month
+                date: new Date(+d.year, (+d.month - 1)),
+                //convert from string to float
+                average: parseFloat(d.average)
+              };
+            }
+
+          d3.csv("monthly_in_situ_co2_mlo.csv", rowConverter, function(data){
+               var dataset = data;
+
+               //print data to console as a table for verification
+               console.table(dataset, ["date", "average"]);
+          })
+        </script>
+    </body>
+</html>
