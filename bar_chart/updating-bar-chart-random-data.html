@@ -9,7 +9,7 @@
 		</style>
 	</head>
 	<body>
-      <p>Click on this text to update the chart with new data values (once).</p>
+      <p>Click on this text to update the chart with new data as much as you'd like!</p>
 
 
 		<script type="text/javascript">
@@ -20,6 +20,8 @@
 
 			var dataset = [ 5, 10, 13, 19, 21, 25, 22, 18, 15, 13,
 							11, 12, 15, 20, 18, 17, 16, 18, 23, 25 ];
+
+
 
 			var xScale = d3.scaleBand()
 							.domain(d3.range(dataset.length))
@@ -78,8 +80,19 @@
          .on("click", function(){
 
            // new values for dataset
-           dataset = [ 11, 12, 15, 20, 18, 17, 16, 18, 23, 25, 5,
-              10, 13, 19, 21, 25, 22, 18, 15, 13];
+           var numValues = dataset.length;
+           var maxValue = 25;
+
+           dataset = [];
+           for (var i = 0; i < numValues; i++){
+             var newNumber = Math.floor(Math.random() * maxValue);
+             dataset.push(newNumber);
+           }
+
+           //Update scale domain
+ 					//Recalibrate the scale domain, given the new max value in dataset
+ 					yScale.domain([0, d3.max(dataset)]);
+
 
           //update all rects
           svg.selectAll("rect")
