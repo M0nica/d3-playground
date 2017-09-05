@@ -48,7 +48,7 @@ var margin = {top: 20, right: 20, bottom: 30, left: 40},
 var xValue = function(d) { return d.Year;}, // data -> value
     xScale = d3.scale.linear().range([0, width]), // value -> display
     xMap = function(d) { return xScale(xValue(d));}, // data -> display
-    xAxis = d3.svg.axis().scale(xScale).orient("bottom");
+    xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickFormat(d3.format("d")); // xAxis does not have thousa
 
 // setup y
 var yValue = function(d) { return d.Position;}, // data -> value
@@ -131,6 +131,8 @@ d3.csv("shonda_rhimes_projects.csv", function(data) {
       .text(""); // y-axis label blank
 
   // draw dots
+
+
   svg.selectAll(".dot")
       .data(data)
     .enter().append("circle")
@@ -140,13 +142,25 @@ d3.csv("shonda_rhimes_projects.csv", function(data) {
       .attr("cy", yMap)
       .style("fill", function(d) { return color(cValue(d));})
       .on("mouseover", function(d) {
+
+        if(d["Producer"] == "Yes"){
+          tooltip.transition()
+               .duration(200)
+               .style("opacity", .9);
+          tooltip.html(d["Title"] + ", Producer "  + "<br/> (" + xValue(d)
+          +  ")")
+               .style("left", (d3.event.pageX + 5) + "px")
+               .style("top", (d3.event.pageY - 28) + "px");
+        } else {
           tooltip.transition()
                .duration(200)
                .style("opacity", .9);
           tooltip.html(d["Title"] + "<br/> (" + xValue(d)
-	        +  ")")
+          +  ")")
                .style("left", (d3.event.pageX + 5) + "px")
                .style("top", (d3.event.pageY - 28) + "px");
+        }
+
       })
       .on("mouseout", function(d) {
           tooltip.transition()
