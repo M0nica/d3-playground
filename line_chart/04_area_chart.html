@@ -73,6 +73,15 @@
 
 				var dataset = data;
 
+				//Function for converting CSV values from strings to Dates and numbers
+				var rowConverter = function(d) {
+					return {
+						date: new Date(+d.year, (+d.month - 1)),  //Make a new Date object for each year + month
+						average: parseFloat(d.average)  //Convert from string to float
+					};
+				}
+
+
 				//Print data to console as table, for verification
 			console.table(dataset, ["date", "average"]);
 
